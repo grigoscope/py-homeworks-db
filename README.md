@@ -2,32 +2,61 @@
 
 ![](db_homework.png)
 
-## Tables
+### Tables and Columns
 
-### Genre
-- **genre_id** (PK)
-- **name**
+**Genre**
 
-### Artist
-- **artist_id** (PK)
-- **name**
-- **genre_id** (FK → Genre.genre_id)
+* **genre\_id** – Primary Key
+* **name** – Genre name
 
-### Album
-- **album_id** (PK)
-- **title**
-- **year**
-- **artist_id** (FK → Artist.artist_id)
+**Artist**
 
-### Track
-- **track_id** (PK)
-- **title**
-- **duration**
-- **album_id** (FK → Album.album_id)
+* **artist\_id** – Primary Key
+* **name** – Artist name
 
-## Relationships
+**Artist\_Genre**
 
-- Genre 1 → N Artist
-- Artist 1 → N Album
-- Album 1 → N Track
+* **artist\_id** – PK, FK → Artist.artist\_id
+* **genre\_id**    – PK, FK → Genre.genre\_id
 
+**Album**
+
+* **album\_id** – Primary Key
+* **title**    – Album title
+* **year**       – Release year
+
+**Artist\_Album**
+
+* **artist\_id** – PK, FK → Artist.artist\_id
+* **album\_id**    – PK, FK → Album.album\_id
+
+**Track**
+
+* **track\_id** – Primary Key
+* **title**    – Track title
+* **duration** – Track length (INTERVAL)
+* **album\_id** – FK → Album.album\_id
+
+**Compilation**
+
+* **compilation\_id** – Primary Key
+* **name**         – Compilation title
+* **year**          – Release year
+
+**Compilation\_Track**
+
+* **compilation\_id** – PK, FK → Compilation.compilation\_id
+* **track\_id**      – PK, FK → Track.track\_id
+
+---
+
+### Relationships
+
+* **Genre ↔ Artist**
+  Many-to-many via **Artist\_Genre**
+* **Artist ↔ Album**
+  Many-to-many via **Artist\_Album**
+* **Album → Track**
+  One-to-many by **Track.album\_id**
+* **Compilation ↔ Track**
+  Many-to-many via **Compilation\_Track**
