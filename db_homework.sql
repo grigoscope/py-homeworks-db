@@ -1,54 +1,57 @@
---- Genres
-create table if not exists Genres(
-	genre_id 		serial 			primary key,
-	name			varchar(60)		not null
+-- Genres
+CREATE TABLE IF NOT EXISTS genres (
+    genre_id 		SERIAL 			PRIMARY KEY,
+    name			VARCHAR (60)	NOT NULL
 );
 
---- Artists
-create table if not exists Artists(
-	artist_id 		serial 			primary key,
-	name			varchar(60)		not null
+-- Artists
+CREATE TABLE IF NOT EXISTS artists (
+    artist_id 		SERIAL 			PRIMARY KEY,
+    name			VARCHAR (60)	NOT NULL
 );
 
---- Genres and Artists link (many-to-many)
-create table if not exists Genres_Artists(
-	genre_id		int				not null references Genres(genre_id),
-	artist_id		int				not null references Artists(artist_id),
-	primary key(genre_id, artist_id)
+-- Genres and Artists link (many-to-many)
+CREATE TABLE IF NOT EXISTS genres_artists (
+    genre_id		INT				NOT NULL REFERENCES genres (genre_id),
+    artist_id		INT				NOT NULL REFERENCES artists (artist_id),
+					PRIMARY KEY (genre_id, artist_id)
 );
 
---- Albums
-create table if not exists Albums(
-	album_id		serial			primary key,
-	name 			varchar(60)		not null,
-	year			smallint		not null
+-- Albums
+CREATE TABLE IF NOT EXISTS albums (
+    album_id		SERIAL			PRIMARY KEY,
+    name 			VARCHAR (60)	NOT NULL,
+    year			SMALLINT		NOT NULL
+					CHECK (year >= 1900)
 );
 
---- Artists and Albums link (many-to-many)
-create table if not exists Artists_Albums(
-	artist_id		int				not null references Artists(artist_id),
-	album_id		int				not null references Albums(album_id),
-	primary key(artist_id, album_id)
+-- Artists and Albums link (many-to-many)
+CREATE TABLE IF NOT EXISTS artists_albums (
+    artist_id		INT				NOT NULL REFERENCES artists (artist_id),
+    album_id		INT				NOT NULL REFERENCES albums (album_id),
+					PRIMARY KEY (artist_id, album_id)
 );
 
---- Tracks
-create table if not exists Tracks(
-	track_id 		serial 			primary key,
-	name			varchar(80)		not null,
-	duration		interval 		not null,
-	album_id 		int 			not null references Albums(album_id)
+-- Tracks
+CREATE TABLE IF NOT EXISTS tracks (
+    track_id 		SERIAL 			PRIMARY KEY,
+    name			VARCHAR(80)		NOT NULL,
+    duration		INTEGER 		NOT NULL,
+    album_id 		INT 			NOT NULL REFERENCES albums (album_id),
+					CHECK (duration > 0)
 );
 
---- Playlists
-create table if not exists Compilations (
-	compilation_id  serial			primary key,
-	name			varchar(120)	not null,
-	year			smallint		not null
+-- Playlists
+CREATE TABLE IF NOT EXISTS compilations (
+    compilation_id  SERIAL			PRIMARY KEY,
+    name			VARCHAR(120)	NOT NULL,
+    year			SMALLINT		NOT NULL,
+					CHECK (year >= 1900)
 );
 
---- Tracks and albums link (many-to-many)
-create table if not exists Compilations_Tracks(
-	compilation_id	int				references Compilations(compilation_id),
-	track_id		int				references Tracks(track_id),
-	primary key (compilation_id, track_id)
+-- Tracks and albums link (many-to-many)
+CREATE TABLE IF NOT EXISTS compilations_tracks (
+    compilation_id	INT				REFERENCES compilations (compilation_id),
+    track_id		INT				REFERENCES tracks (track_id),
+					PRIMARY KEY (compilation_id, track_id)
 );
